@@ -1,0 +1,116 @@
+#include <iostream> // ques 4(a.)
+using namespace std;
+
+int main() {
+	int arr[100], n;
+
+	cout << "Enter number of elements: ";
+	cin >> n;
+
+	cout << "Enter elements:";
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+
+	for (int i = 0; i < n / 2; i++) { // reversing the array
+		int temp = arr[i];
+		arr[i] = arr[n - 1 - i];
+		arr[n - 1 - i] = temp;
+	}
+
+	cout << "Reversed array:";
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
+	}
+
+	return 0;
+}
+
+
+
+#include <iostream> // (b)
+using namespace std;
+
+int main() {
+	int A[10][10], B[10][10], C[10][10];
+	int r1, c1, r2, c2;
+
+	cout << "Enter rows and columns of first matrix: ";
+	cin >> r1 >> c1;
+
+	cout << "Enter rows and columns of second matrix: ";
+	cin >> r2 >> c2;
+
+	if (c1 != r2) {
+		cout << "Multiplication not possible";
+		return 0;
+	}
+
+	cout << "Enter elements of first matrix:";
+	for (int i = 0; i < r1; i++) {
+		for (int j = 0; j < c1; j++) {
+			cin >> A[i][j];
+		}
+	}
+
+	cout << "Enter elements of second matrix:";
+	for (int i = 0; i < r2; i++) {
+		for (int j = 0; j < c2; j++) {
+			cin >> B[i][j];
+		}
+	}
+
+	for (int i = 0; i < r1; i++) {
+		for (int j = 0; j < c2; j++) {
+			C[i][j] = 0;
+			for (int k = 0; k < c1; k++) { // k is the index used to Move across the row of Matrix A and down the column of matrix B
+				C[i][j] += A[i][k] * B[k][j];
+			}
+		}
+	}
+
+	cout << "Result of multiplication:";
+	for (int i = 0; i < r1; i++) {
+		for (int j = 0; j < c2; j++) {
+			cout << C[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	return 0;
+}
+
+
+#include <iostream> //(c)
+using namespace std;
+
+int main() {
+	int A[10][10], T[10][10];
+	int rows, cols;
+
+	cout << "Enter number of rows and columns: ";
+	cin >> rows >> cols;
+
+	cout << "Enter elements of the matrix:";
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			cin >> A[i][j];
+		}
+	}
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			T[j][i] = A[i][j];
+		}
+	}
+
+	cout << "Transpose of the matrix:";
+	for (int i = 0; i < cols; i++) {
+		for (int j = 0; j < rows; j++) {
+			cout << T[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	return 0;
+}
