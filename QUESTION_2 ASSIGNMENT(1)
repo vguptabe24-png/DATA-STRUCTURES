@@ -1,0 +1,41 @@
+
+#include <iostream> // ques 2
+using namespace std;
+
+int main() {
+	int numbers[100];
+	int size;
+
+	cout << "Enter number of elements: ";
+	cin >> size;
+
+
+	cout << "Enter the elements:";
+	for (int i = 0; i < size; i++) {
+		cin >> numbers[i];
+	}
+
+	// Remove duplicates
+	for (int i = 0; i < size; i++) { // outer loop i picks each element one by one
+		for (int j = i + 1; j < size; ) { //checks all elements after i to see if any are the same
+			if (numbers[i] == numbers[j]) {
+				// If duplicate found, shift all elements to the left
+				for (int k = j; k < size - 1; k++) {
+					numbers[k] = numbers[k + 1];
+				}
+				size--; // Reduce size of the array
+				// Don't increase j, check new element at same position
+			} else {
+				j++; // Move to next element only if no duplicate
+			}
+		}
+	}
+
+
+	cout << "Array after removing duplicates:\n";
+	for (int i = 0; i < size; i++) {
+		cout << numbers[i] << " ";
+	}
+
+	return 0;
+}
