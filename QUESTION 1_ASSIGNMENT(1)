@@ -1,0 +1,107 @@
+#include <iostream> // ques 1
+using namespace std;
+
+int arr[100];
+int size = 0;
+
+int main() {
+	int choice;
+
+	do {
+		cout << "1. CREATE\n";
+		cout << "2. DISPLAY\n";
+		cout << "3. INSERT\n";
+		cout << "4. DELETE\n";
+		cout << "5. LINEAR SEARCH\n";
+		cout << "6. EXIT\n";
+		cout << "Enter your choice: ";
+		cin >> choice;
+
+		if (choice == 1) {
+			// CREATE
+			cout << "Enter size of array: ";
+			cin >> size;
+			cout << "Enter " << size << " elements:\n";
+			for (int i = 0; i < size; i++) {
+				cin >> arr[i];
+			}
+		}
+
+		else if (choice == 2) {
+			// DISPLAY
+			cout << "Array elements: ";
+			for (int i = 0; i < size; i++) {
+				cout << arr[i] << " ";
+			}
+			cout << endl;
+		}
+
+		else if (choice == 3) {
+			// INSERT
+			int pos, val;
+			cout << "Enter position (0 to " << size << "): ";
+			cin >> pos;
+			cout << "Enter value to insert: ";
+			cin >> val;
+
+			if (pos >= 0 && pos <= size) {
+				// Shift right
+				for (int i = size; i > pos; i--) {
+					arr[i] = arr[i - 1];
+				}
+				arr[pos] = val;
+				size++;
+				cout << "Inserted successfully.\n";
+			} else {
+				cout << "Invalid position.\n";
+			}
+		}
+
+		else if (choice == 4) {
+			// DELETE
+			int pos;
+			cout << "Enter position to delete (0 to " << size - 1 << "): ";
+			cin >> pos;
+
+			if (pos >= 0 && pos < size) {
+				// Shift left
+				for (int i = pos; i < size - 1; i++) {
+					arr[i] = arr[i + 1];
+				}
+				size--;
+				cout << "Deleted successfully.\n";
+			} else {
+				cout << "Invalid position.\n";
+			}
+		}
+
+		else if (choice == 5) {
+			// LINEAR SEARCH
+			int key, found = 0;
+			cout << "Enter element to search: ";
+			cin >> key;
+
+			for (int i = 0; i < size; i++) {
+				if (arr[i] == key) {
+					cout << "Element found at position " << i << endl;
+					found = 1;
+					break;
+				}
+			}
+			if (!found) {
+				cout << "Element not found.\n";
+			}
+		}
+
+		else if (choice == 6) {
+			cout << "Exiting program.\n";
+		}
+
+		else {
+			cout << "Invalid choice. Try again.\n";
+		}
+
+	} while (choice != 6);
+
+	return 0;
+}
