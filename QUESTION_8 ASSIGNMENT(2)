@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;   //
+    int arr[100];
+    
+    for (int i = 0; i < n; i++) { // ARRAY INPUT KR RHE HAI!!
+        cin >> arr[i];
+    }
+
+    int count = 0; // DISTINCT COUNT
+
+    for (int i = 0; i < n; i++) { // CHECK EACH ELEMENT!!
+        bool isDuplicate = false;
+        for (int j = 0; j < i; j++) { CHECKING PREVIOUS ELEMENTS TO SEE IF THE CURRENT ELEMENT HAS ALREADY APPERAED!!
+            if (arr[i] == arr[j]) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        if (!isDuplicate) {
+            count++;
+        }
+    }
+
+    cout << "Total distinct elements: " << count;
+    return 0;
+}
