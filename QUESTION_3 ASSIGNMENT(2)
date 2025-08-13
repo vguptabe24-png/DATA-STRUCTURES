@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 6, 7, 8};
+    int n = 7; // size of array
+
+    int missing = -1;
+    for (int i = 0; i < n - 1; i++) {
+        if (arr[i + 1] - arr[i] != 1) {
+            missing = arr[i] + 1;
+            break;
+        }
+    }
+
+    cout << "Missing Number: " << missing << endl;
+    return 0;
+}
