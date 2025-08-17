@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of elements: "; // Asking user to input size of array
+    cin >> n;
+
+    int A[100]; //
+
+    cout << "Enter " << n << " elements:" << endl;  // Input array elements
+    for (int i = 0; i < n; i++) {
+        cin >> A[i];
+    }
+
+    int inversionCount = 0;
+
+
+    for (int i = 0; i < n - 1; i++) {  // Comparing each pair (i, j) where i < j
+        for (int j = i + 1; j < n; j++) {
+            if (A[i] > A[j]) {
+                inversionCount++;  // Found an inversion
+            }
+        }
+    }
+    cout << "Number of inversions: " << inversionCount << endl;
+
+    return 0;
+}
