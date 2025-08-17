@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    char ch;
+    cout << "Enter an uppercase letter: "; // Asking the user to enter an uppercase letter
+    cin >> ch;
+    if (ch >= 'A' && ch <= 'Z') {   // Checking if the character is uppercase
+   
+       char lower = ch + 32;     // Converting to lowercase by adding 32 (32 isliye add kiya kyoki A is ascii value 65 and a ki ascii value 97 hai to 65+32=97
+        cout << "Lowercase: " << lower << endl;
+    } else {
+        cout << "That is not an uppercase letter!" << endl;
+    }
+
+    return 0;
+}
