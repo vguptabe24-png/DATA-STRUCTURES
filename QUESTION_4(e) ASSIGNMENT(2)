@@ -7,7 +7,7 @@ int main() {
     cin >> ch;
     if (ch >= 'A' && ch <= 'Z') {   // Checking if the character is uppercase
    
-       char lower = ch + 32;     // Converting to lowercase by adding 32 (32 isliye add kiya kyoki A is ascii value 65 and a ki ascii value 97 hai to 65+32=97
+       char lower = ch + 32;     // Converting to lowercase by adding 32 (32 isliye add kiya kyoki A ki ascii value 65 hai and a ki ascii value 97 hai to 65+32=97
         cout << "Lowercase: " << lower << endl;
     } else {
         cout << "That is not an uppercase letter!" << endl;
