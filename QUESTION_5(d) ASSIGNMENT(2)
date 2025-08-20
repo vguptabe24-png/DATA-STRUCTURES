@@ -1,0 +1,8 @@
+void storeUpper(int up[], int n, int i, int j, int val) {
+    if (i <= j) up[( (i-1)*n - (i-2)*(i-1)/2 ) + (j-i)] = val;
+}
+
+int getUpper(int up[], int n, int i, int j) {
+    if (i <= j) return up[( (i-1)*n - (i-2)*(i-1)/2 ) + (j-i)];
+    else return 0;
+}
