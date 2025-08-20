@@ -1,0 +1,163 @@
+#include <iostream>
+using namespace std;
+
+// Triplet representation structure
+struct Element {
+    int row, col, val;
+};
+
+// Function to create triplet representation
+void createTriplet(int mat[10][10], int r, int c, Element triplet[100], int &size) {
+    size = 1; // index starts from 1, index 0 is for metadata
+    triplet[0].row = r;
+    triplet[0].col = c;
+    triplet[0].val = 0; // will store total non-zero count
+
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            if (mat[i][j] != 0) {
+                triplet[size].row = i;
+                triplet[size].col = j;
+                triplet[size].val = mat[i][j];
+                size++;
+            }
+        }
+    }
+    triplet[0].val = size - 1; // store count of non-zero elements
+}
+
+// Function to display triplet form
+void displayTriplet(Element triplet[100], int size) {
+    cout << "Row Col Val\n";
+    for (int i = 0; i < size; i++) {
+        cout << triplet[i].row << "   " << triplet[i].col << "   " << triplet[i].val << endl;
+    }
+}
+
+// (a) Transpose
+void transpose(Element triplet[100], Element trans[100], int size) {
+    trans[0].row = triplet[0].col;
+    trans[0].col = triplet[0].row;
+    trans[0].val = triplet[0].val;
+
+    int k = 1;
+    for (int i = 0; i < triplet[0].col; i++) {
+        for (int j = 1; j < size; j++) {
+            if (triplet[j].col == i) {
+                trans[k].row = triplet[j].col;
+                trans[k].col = triplet[j].row;
+                trans[k].val = triplet[j].val;
+                k++;
+            }
+        }
+    }
+}
+
+// (b) Addition
+void add(Element t1[100], Element t2[100], Element sum[100]) {
+    if (t1[0].row != t2[0].row || t1[0].col != t2[0].col) {
+        cout << "Addition not possible\n";
+        return;
+    }
+    sum[0].row = t1[0].row;
+    sum[0].col = t1[0].col;
+
+    int i = 1, j = 1, k = 1;
+    while (i <= t1[0].val && j <= t2[0].val) {
+        if (t1[i].row == t2[j].row && t1[i].col == t2[j].col) {
+            sum[k].row = t1[i].row;
+            sum[k].col = t1[i].col;
+            sum[k].val = t1[i].val + t2[j].val;
+            i++; j++; k++;
+        } else if (t1[i].row < t2[j].row || 
+                  (t1[i].row == t2[j].row && t1[i].col < t2[j].col)) {
+            sum[k++] = t1[i++];
+        } else {
+            sum[k++] = t2[j++];
+        }
+    }
+    while (i <= t1[0].val) sum[k++] = t1[i++];
+    while (j <= t2[0].val) sum[k++] = t2[j++];
+
+    sum[0].val = k - 1;
+}
+
+// (c) Multiplication
+void multiply(Element t1[100], Element t2[100], Element prod[100]) {
+    if (t1[0].col != t2[0].row) {
+        cout << "Multiplication not possible\n";
+        return;
+    }
+    prod[0].row = t1[0].row;
+    prod[0].col = t2[0].col;
+    int k = 1;
+
+    for (int i = 1; i <= t1[0].val; i++) {
+        for (int j = 1; j <= t2[0].val; j++) {
+            if (t1[i].col == t2[j].row) {
+                int r = t1[i].row;
+                int c = t2[j].col;
+                int v = t1[i].val * t2[j].val;
+
+                // Check if already present
+                int found = 0;
+                for (int x = 1; x < k; x++) {
+                    if (prod[x].row == r && prod[x].col == c) {
+                        prod[x].val += v;
+                        found = 1;
+                        break;
+                    }
+                }
+                if (!found) {
+                    prod[k].row = r;
+                    prod[k].col = c;
+                    prod[k].val = v;
+                    k++;
+                }
+            }
+        }
+    }
+    prod[0].val = k - 1;
+}
+
+int main() {
+    int r, c;
+    cout << "Enter rows and cols of matrix: ";
+    cin >> r >> c;
+
+    int mat1[10][10], mat2[10][10];
+    cout << "Enter elements of first matrix:\n";
+    for (int i = 0; i < r; i++)
+        for (int j = 0; j < c; j++)
+            cin >> mat1[i][j];
+
+    cout << "Enter elements of second matrix:\n";
+    for (int i = 0; i < r; i++)
+        for (int j = 0; j < c; j++)
+            cin >> mat2[i][j];
+
+    Element t1[100], t2[100], trans[100], sum[100], prod[100];
+    int s1, s2;
+
+    createTriplet(mat1, r, c, t1, s1);
+    createTriplet(mat2, r, c, t2, s2);
+
+    cout << "\nTriplet of Matrix 1:\n";
+    displayTriplet(t1, s1);
+    cout << "\nTriplet of Matrix 2:\n";
+    displayTriplet(t2, s2);
+
+    transpose(t1, trans, s1);
+    cout << "\nTranspose of Matrix 1:\n";
+    displayTriplet(trans, trans[0].val + 1);
+
+    add(t1, t2, sum);
+    cout << "\nAddition of Matrices:\n";
+    displayTriplet(sum, sum[0].val + 1);
+
+    multiply(t1, t2, prod);
+    cout << "\nMultiplication of Matrices:\n";
+    displayTriplet(prod, prod[0].val + 1);
+
+    return 0;
+}
