@@ -1,0 +1,8 @@
+void storeLower(int low[], int n, int i, int j, int val) {
+    if (i >= j) low[(i*(i-1))/2 + (j-1)] = val;
+}
+
+int getLower(int low[], int n, int i, int j) {
+    if (i >= j) return low[(i*(i-1))/2 + (j-1)];
+    else return 0;
+}
