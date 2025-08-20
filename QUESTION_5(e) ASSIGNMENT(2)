@@ -1,0 +1,9 @@
+void storeSymmetric(int sym[], int n, int i, int j, int val) {
+    if (i >= j) sym[(i*(i-1))/2 + (j-1)] = val;
+    else sym[(j*(j-1))/2 + (i-1)] = val; // store mirror
+}
+
+int getSymmetric(int sym[], int n, int i, int j) {
+    if (i >= j) return sym[(i*(i-1))/2 + (j-1)];
+    else return sym[(j*(j-1))/2 + (i-1)];
+}
