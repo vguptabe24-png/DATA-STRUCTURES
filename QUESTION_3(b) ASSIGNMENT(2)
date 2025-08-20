@@ -2,7 +2,7 @@
 using namespace std;
 
 int findMissingBinary(int a[], int n) {
-    int low = 0, high = n - 2;
+    int low = 0, high = n - 2; //(n - 2) because the array has n - 1 elements , low is the starting index of array
     while (low <= high) {
         int mid = (low + high) / 2;
         if (a[mid] == mid + 1) {
@@ -11,7 +11,7 @@ int findMissingBinary(int a[], int n) {
             high = mid - 1;
         }
     }
-    return low + 1;
+    return low + 1; // When the loop ends, low is pointing to the position where the number is missing
 }
 
 int main() {
