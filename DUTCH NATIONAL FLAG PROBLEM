@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int arr[] = {0,1,0,1,0,2,0,2,2,1,2,1,0,1,0,1,0,2,0,1}; // low keeps track of left side (0s) mid is current checker high keeps track of right side (2s)
+    int low = 0, mid = 0, high = 19;
+
+    while (mid <= high) {
+        if (arr[mid] == 2) { //2 should go to the right side
+            swap(arr[mid], arr[high]);
+            high--; // we don’t move mid here, because after swapping we must check the new value at arr[mid]
+        }
+        else if (arr[mid] == 1) {
+            mid++; //1 is already in the middle section
+        }
+        else {
+            swap(arr[mid], arr[low]); //0 should go to the left side
+            mid++;
+            low++;
+        }
+    }
+
+    for (int i = 0; i < 19; i++) {
+        cout << arr[i] << " ";
+    }
+
+    cout << endl;
+}
