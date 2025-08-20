@@ -1,0 +1,12 @@
+void storeTridiagonal(int tri[], int n, int i, int j, int val) {
+    if (i-j == 1) tri[i-2] = val;                // lower diagonal
+    else if (i-j == 0) tri[n-1 + i-1] = val;     // main diagonal
+    else if (i-j == -1) tri[2*n-1 + i-1] = val;  // upper diagonal
+}
+
+int getTridiagonal(int tri[], int n, int i, int j) {
+    if (i-j == 1) return tri[i-2];
+    else if (i-j == 0) return tri[n-1 + i-1];
+    else if (i-j == -1) return tri[2*n-1 + i-1];
+    else return 0;
+}
