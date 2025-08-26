@@ -1,0 +1,43 @@
+#include <iostream>         //  go through original array from left to right    If the element is not 2, just copy it   If it is 2, copy it two times  If the new array is full, stop.
+using namespace std;
+
+void duplicateTwos(int arr[], int n) {
+    int temp[100];  // temporary array        Creating a new array of the same size (temp)
+    int k = 0;      // index for temp
+
+    for (int i = 0; i < n; i++) {
+        if (k >= n) break;    // stop if array already full
+
+        if (arr[i] == 2) {
+            temp[k] = 2;      // first 2
+            k++;
+            if (k < n) {      // second 2 if space left
+                temp[k] = 2;
+                k++;
+            }
+        } else {
+            temp[k] = arr[i]; // normal copy
+            k++;
+        }
+    }
+
+    // copy back to original array
+    for (int i = 0; i < n; i++) {
+        arr[i] = temp[i];
+    }
+}
+
+int main() {
+    int arr[10] = {1, 2, 3, 4, 5};
+    int n = 5;
+
+    duplicateTwos(arr, n);
+
+    // print result
+    for (int i = 0; i < n; i++) {  //Copy back into original array
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
