@@ -1,70 +1,42 @@
+
 #include <iostream>
 using namespace std;
 
-#define MAX 100
-char stack[MAX];
-int top = -1;
+int main() {
+    char exp[100], stack[100];
+    int top = -1;
 
-// push character into stack
-void push(char ch) {
-    if (top == MAX - 1) {
-        cout << "Stack Overflow\n";
-    } else {
-        top++;
-        stack[top] = ch;
-    }
-}
+    cout << "Enter an expression: ";
+    cin >> exp;
 
-// pop character from stack
-char pop() {
-    if (top == -1) {
-        return '\0'; // empty stack
-    } else {
-        char ch = stack[top];
-        top--;
-        return ch;
-    }
-}
-
-// check if parentheses are balanced
-int isBalanced(char exp[]) {
     for (int i = 0; exp[i] != '\0'; i++) {
         char ch = exp[i];
 
-        // if opening bracket, push it
+        // If opening bracket → push
         if (ch == '(' || ch == '{' || ch == '[') {
-            push(ch);
+            stack[++top] = ch;
         }
-        // if closing bracket, check top of stack
+        // If closing bracket → check matching
         else if (ch == ')' || ch == '}' || ch == ']') {
-            char popped = pop();
-
-            if ((ch == ')' && popped != '(') ||
-                (ch == '}' && popped != '{') ||
-                (ch == ']' && popped != '[')) {
-                return 0; // not balanced
+            if (top == -1) {   // no opening bracket
+                cout << "Not Balanced\n";
+                return 0;
+            }
+            char last = stack[top--];
+            if ((ch == ')' && last != '(') ||
+                (ch == '}' && last != '{') ||
+                (ch == ']' && last != '[')) {
+                cout << "Not Balanced\n";
+                return 0;
             }
         }
     }
 
-    // if stack still has elements, not balanced
-    if (top != -1) {
-        return 0;
-    }
-    return 1; // balanced
-}
-
-int main() {
-    char exp[100];
-
-    cout << "Enter an expression: ";
-    cin >> exp;  // input without spaces
-
-    if (isBalanced(exp)) {
-        cout << "Expression has Balanced Parentheses\n";
-    } else {
-        cout << "Expression does NOT have Balanced Parentheses\n";
-    }
+    // If stack empty → balanced
+    if (top == -1)
+        cout << "Balanced\n";
+    else
+        cout << "Not Balanced\n";
 
     return 0;
 }
