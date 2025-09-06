@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+// function to convert decimal to binary
+void printBinary(int num) {
+    int bin[32], i = 0;
+    while (num > 0) {
+        bin[i++] = num % 2;
+        num /= 2;
+    }
+    // print in reverse
+    for (int j = i - 1; j >= 0; j--) {
+        printf("%d", bin[j]);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter n: ");
+    scanf("%d", &n);
+
+    for (int i = 1; i <= n; i++) {
+        printBinary(i);
+        if (i < n) printf(", ");  // comma separated
+    }
+    printf("\n");
+
+    return 0;
+}
