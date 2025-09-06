@@ -1,0 +1,47 @@
+#include <stdio.h>
+#define SIZE 100
+
+int q1[SIZE], q2[SIZE];
+int f1 = 0, r1 = -1, f2 = 0, r2 = -1;
+
+// queue helpers
+void enqueue1(int x) { q1[++r1] = x; }
+int dequeue1() { return q1[f1++]; }
+int isEmpty1() { return f1 > r1; }
+
+void enqueue2(int x) { q2[++r2] = x; }
+int dequeue2() { return q2[f2++]; }
+int isEmpty2() { return f2 > r2; }
+
+// stack push
+void push(int x) {
+    enqueue2(x);
+    while (!isEmpty1()) {
+        enqueue2(dequeue1());
+    }
+    // swap q1 and q2
+    int tQ[SIZE]; int tf, tr;
+    // copy q1=f1..r1 <- q2
+    f1=f2; r1=r2;
+    for (int i=f1;i<=r1;i++) q1[i]=q2[i];
+    // reset q2
+    f2=0; r2=-1;
+}
+
+// stack pop
+int pop() {
+    if (isEmpty1()) {
+        printf("Stack Empty\n");
+        return -1;
+    }
+    return dequeue1();
+}
+
+int main() {
+    push(10);
+    push(20);
+    push(30);
+    printf("%d\n", pop()); // 30
+    printf("%d\n", pop()); // 20
+    return 0;
+}
