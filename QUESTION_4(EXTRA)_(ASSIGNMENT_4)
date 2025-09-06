@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main() {
+    int students[] = {1,1,0,0};
+    int sandwiches[] = {0,1,0,1};
+    int n = 4;
+
+    int front = 0; // front of student queue
+    int count = n; // remaining students
+
+    int rounds;
+    while (count > 0) {
+        rounds = count; // max rotations before stopping
+
+        while (rounds--) {
+            if (students[front] == sandwiches[n - count]) {
+                // student takes sandwich
+                front = (front + 1) % n;
+                count--;
+                break;
+            } else {
+                // move student to end
+                front = (front + 1) % n;
+            }
+        }
+
+        // if none took sandwich in a full round, stop
+        if (rounds < 0) break;
+    }
+
+    printf("%d\n", count);
+    return 0;
+}
