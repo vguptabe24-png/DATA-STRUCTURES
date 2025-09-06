@@ -1,0 +1,40 @@
+#include <stdio.h>
+
+#define SIZE 100
+
+int main() {
+    int Q[] = {5, 1, 2, 3, 4};
+    int n = 5;
+
+    int S[SIZE], top = -1; // stack
+    int expected = 1;
+    int i = 0; // index for Q
+
+    while (i < n) {
+        if (Q[i] == expected) {
+            // move directly to output
+            expected++;
+            i++;
+        } else if (top >= 0 && S[top] == expected) {
+            top--; // pop from stack to output
+            expected++;
+        } else {
+            // push into stack
+            S[++top] = Q[i];
+            i++;
+        }
+    }
+
+    // pop remaining stack
+    while (top >= 0 && S[top] == expected) {
+        top--;
+        expected++;
+    }
+
+    if (expected - 1 == n)
+        printf("Yes\n");
+    else
+        printf("No\n");
+
+    return 0;
+}
