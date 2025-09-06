@@ -1,0 +1,57 @@
+#include <stdio.h>
+#define SIZE 100
+
+int queue[SIZE];
+int front = -1, rear = -1;
+
+void enqueue(int x) {
+    if (rear == SIZE - 1) {
+        printf("Queue FULL\n");
+    } else {
+        if (front == -1) front = 0;
+        queue[++rear] = x;
+    }
+}
+
+int dequeue() {
+    if (front == -1 || front > rear) {
+        printf("Queue EMPTY\n");
+        return -1;
+    } else {
+        return queue[front++];
+    }
+}
+
+int main() {
+    int n, i;
+    printf("Enter number of elements (even count): ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements: ", n);
+    for (i = 0; i < n; i++) {
+        int val;
+        scanf("%d", &val);
+        enqueue(val);
+    }
+
+    int half = n / 2;
+    int firstHalf[SIZE], secondHalf[SIZE];
+
+    // Dequeue first half
+    for (i = 0; i < half; i++) {
+        firstHalf[i] = dequeue();
+    }
+    // Dequeue second half
+    for (i = 0; i < half; i++) {
+        secondHalf[i] = dequeue();
+    }
+
+    // Interleave and print
+    printf("Interleaved Queue: ");
+    for (i = 0; i < half; i++) {
+        printf("%d %d ", firstHalf[i], secondHalf[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
