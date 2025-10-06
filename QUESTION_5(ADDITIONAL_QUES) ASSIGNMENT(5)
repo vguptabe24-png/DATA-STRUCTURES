@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+// Node class for polynomial term
+class Node {
+public:
+    int coeff;   // coefficient
+    int pow;     // power
+    Node* next;
+
+    Node(int c, int p) {
+        coeff = c;
+        pow = p;
+        next = NULL;
+    }
+};
+
+// LinkedList class for polynomial
+class Polynomial {
+public:
+    Node* head;
+
+    Polynomial() {
+        head = NULL;
+    }
+
+    // Function to insert new term at end
+    void insertTerm(int coeff, int pow) {
+        Node* newNode = new Node(coeff, pow);
+
+        if (head == NULL) {
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != NULL)
+            temp = temp->next;
+
+        temp->next = newNode;
+    }
+
+    // Function to add two polynomials
+    static Polynomial addPolynomials(Polynomial p1, Polynomial p2) {
+        Polynomial result;
+        Node* ptr1 = p1.head;
+        Node* ptr2 = p2.head;
+
+        while (ptr1 != NULL && ptr2 != NULL) {
+            // If powers are same, add coefficients
+            if (ptr1->pow == ptr2->pow) {
+                result.insertTerm(ptr1->coeff + ptr2->coeff, ptr1->pow);
+                ptr1 = ptr1->next;
+                ptr2 = ptr2->next;
+            }
+            // If first polynomial has higher power
+            else if (ptr1->pow > ptr2->pow) {
+                result.insertTerm(ptr1->coeff, ptr1->pow);
+                ptr1 = ptr1->next;
+            }
+            // If second polynomial has higher power
+            else {
+                result.insertTerm(ptr2->coeff, ptr2->pow);
+                ptr2 = ptr2->next;
+            }
+        }
+
+        // If remaining terms in first polynomial
+        while (ptr1 != NULL) {
+            result.insertTerm(ptr1->coeff, ptr1->pow);
+            ptr1 = ptr1->next;
+        }
+
+        // If remaining terms in second polynomial
+        while (ptr2 != NULL) {
+            result.insertTerm(ptr2->coeff, ptr2->pow);
+            ptr2 = ptr2->next;
+        }
+
+        return result;
+    }
+
+    // Function to display polynomial
+    void display() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->coeff << "x^" << temp->pow;
+            if (temp->next != NULL)
+                cout << " + ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+// Main function
+int main() {
+    Polynomial p1, p2, result;
+
+    // First polynomial: 5x^2 + 4x^1 + 2x^0
+    p1.insertTerm(5, 2);
+    p1.insertTerm(4, 1);
+    p1.insertTerm(2, 0);
+
+    // Second polynomial: 5x^1 + 5x^0
+    p2.insertTerm(5, 1);
+    p2.insertTerm(5, 0);
+
+    cout << "First Polynomial: ";
+    p1.display();
+
+    cout << "Second Polynomial: ";
+    p2.display();
+
+    result = Polynomial::addPolynomials(p1, p2);
+
+    cout << "Resultant Polynomial: ";
+    result.display();
+
+    return 0;
+}
