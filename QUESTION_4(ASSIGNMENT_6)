@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    char data;
+    Node* prev;
+    Node* next;
+};
+
+class DoublyLinkedList {
+    Node* head;
+    Node* tail;
+
+public:
+    DoublyLinkedList() {
+        head = NULL;
+        tail = NULL;
+    }
+
+    // Insert character at end
+    void insert(char ch) {
+        Node* newNode = new Node();
+        newNode->data = ch;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+
+        if (head == NULL) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+    }
+
+    // Function to check if palindrome
+    bool isPalindrome() {
+        if (head == NULL) {
+            cout << "List is empty!" << endl;
+            return false;
+        }
+
+        Node* start = head;
+        Node* end = tail;
+
+        while (start != end && end->next != start) {
+            if (start->data != end->data)
+                return false;  // Mismatch found
+            start = start->next;
+            end = end->prev;
+        }
+        return true;  // All matched
+    }
+
+    // Display list
+    void display() {
+        Node* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoublyLinkedList dll;
+    int n;
+    char ch;
+
+    cout << "Enter number of characters: ";
+    cin >> n;
+
+    cout << "Enter characters one by one:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> ch;
+        dll.insert(ch);
+    }
+
+    cout << "\nDoubly Linked List: ";
+    dll.display();
+
+    if (dll.isPalindrome())
+        cout << " The list is a palindrome.\n";
+    else
+        cout << " The list is NOT a palindrome.\n";
+
+    return 0;
+}
