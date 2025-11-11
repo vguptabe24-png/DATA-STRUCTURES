@@ -1,0 +1,203 @@
+#include <iostream> // CIRCULAR LINKED LIST
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+// Function to count 1's in binary form (parity)
+int findParity(int n) {
+    int count = 0;
+    while (n) {
+        count += (n & 1);
+        n >>= 1;
+    }
+    return count;
+}
+
+// Function to delete nodes with even parity
+void removeEvenParityNodes(Node** head_ref) {
+    if (*head_ref == NULL)
+        return;
+
+    Node *curr = *head_ref, *prev = NULL;
+
+    // Handle the case where all nodes may need to be deleted
+    do {
+        int parity = findParity(curr->data);
+
+        if (parity % 2 == 0) {  // Even parity
+            if (curr == *head_ref) {  // Deleting head
+                Node* last = *head_ref;
+                while (last->next != *head_ref)
+                    last = last->next;
+
+                // Single node case
+                if (last == *head_ref) {
+                    delete curr;
+                    *head_ref = NULL;
+                    return;
+                }
+
+                last->next = curr->next;
+                *head_ref = curr->next;
+                delete curr;
+                curr = *head_ref;
+            } else {
+                prev->next = curr->next;
+                delete curr;
+                curr = prev->next;
+            }
+        } else {
+            prev = curr;
+            curr = curr->next;
+        }
+    } while (curr != *head_ref && *head_ref != NULL);
+}
+
+// Function to print circular linked list
+void printList(Node* head) {
+    if (head == NULL)
+        return;
+    Node* temp = head;
+    do {
+        cout << temp->data << " ";
+        temp = temp->next;
+    } while (temp != head);
+    cout << endl;
+}
+
+// Helper function to insert at end
+void insert(Node** head_ref, int data) {
+    Node* newNode = new Node();
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (*head_ref == NULL) {
+        *head_ref = newNode;
+        newNode->next = *head_ref;
+        return;
+    }
+
+    Node* temp = *head_ref;
+    while (temp->next != *head_ref)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->next = *head_ref;
+}
+
+int main() {
+    Node* head = NULL;
+    insert(&head, 9);
+    insert(&head, 11);
+    insert(&head, 34);
+    insert(&head, 6);
+    insert(&head, 13);
+    insert(&head, 21);
+
+    cout << "Original CLL: ";
+    printList(head);
+
+    removeEvenParityNodes(&head);
+
+    cout << "After removing even parity nodes: ";
+    printList(head);
+
+    return 0;
+}
+
+
+DOUBLY LINKED LIST#include <iostream>
+using namespace std;
+
+class DNode {
+public:
+    int data;
+    DNode* next;
+    DNode* prev;
+};
+
+// Function to count 1's in binary form (parity)
+int findParity(int n) {
+    int count = 0;
+    while (n) {
+        count += (n & 1);
+        n >>= 1;
+    }
+    return count;
+}
+
+// Function to remove even parity nodes
+void removeEvenParityNodes(DNode** head_ref) {
+    DNode* curr = *head_ref;
+
+    while (curr != NULL) {
+        int parity = findParity(curr->data);
+        DNode* nextNode = curr->next;
+
+        if (parity % 2 == 0) {  // Even parity
+            if (curr->prev)
+                curr->prev->next = curr->next;
+            else
+                *head_ref = curr->next;
+
+            if (curr->next)
+                curr->next->prev = curr->prev;
+
+            delete curr;
+        }
+        curr = nextNode;
+    }
+}
+
+// Function to print DLL
+void printList(DNode* head) {
+    while (head) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+// Helper to insert node at end
+void insert(DNode** head_ref, int data) {
+    DNode* newNode = new DNode();
+    newNode->data = data;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    if (*head_ref == NULL) {
+        *head_ref = newNode;
+        return;
+    }
+
+    DNode* temp = *head_ref;
+    while (temp->next)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+int main() {
+    DNode* head = NULL;
+    insert(&head, 18);
+    insert(&head, 15);
+    insert(&head, 8);
+    insert(&head, 9);
+    insert(&head, 14);
+
+    cout << "Original DLL: ";
+    printList(head);
+
+    removeEvenParityNodes(&head);
+
+    cout << "After removing even parity nodes: ";
+    printList(head);
+
+    return 0;
+}
+
