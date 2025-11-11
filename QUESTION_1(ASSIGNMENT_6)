@@ -1,0 +1,193 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node(int val) {
+        data = val;
+        next = NULL;
+    }
+};
+
+class CircularLinkedList {
+    Node* head;
+public:
+    CircularLinkedList() {
+        head = NULL;
+    }
+
+    void insertAtBeginning(int val) {
+        Node* newNode = new Node(val);
+        if (head == NULL) {
+            head = newNode;
+            head->next = head;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != head)
+            temp = temp->next;
+        newNode->next = head;
+        temp->next = newNode;
+        head = newNode;
+    }
+
+    void insertAtEnd(int val) {
+        Node* newNode = new Node(val);
+        if (head == NULL) {
+            head = newNode;
+            head->next = head;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next != head)
+            temp = temp->next;
+        temp->next = newNode;
+        newNode->next = head;
+    }
+
+    void insertAfter(int key, int val) {
+        if (head == NULL) {
+            cout << "List is empty!\n";
+            return;
+        }
+        Node* temp = head;
+        do {
+            if (temp->data == key) {
+                Node* newNode = new Node(val);
+                newNode->next = temp->next;
+                temp->next = newNode;
+                return;
+            }
+            temp = temp->next;
+        } while (temp != head);
+        cout << "Key not found!\n";
+    }
+
+    void deleteNode(int key) {
+        if (head == NULL) {
+            cout << "List is empty!\n";
+            return;
+        }
+
+        Node* curr = head;
+        Node* prev = NULL;
+
+        // case 1: deleting head node
+        if (head->data == key) {
+            Node* temp = head;
+            while (temp->next != head)
+                temp = temp->next;
+            if (head->next == head) { // single node
+                delete head;
+                head = NULL;
+                return;
+            }
+            temp->next = head->next;
+            Node* toDel = head;
+            head = head->next;
+            delete toDel;
+            return;
+        }
+
+        // case 2: deleting non-head node
+        do {
+            prev = curr;
+            curr = curr->next;
+            if (curr->data == key) {
+                prev->next = curr->next;
+                delete curr;
+                return;
+            }
+        } while (curr != head);
+
+        cout << "Node not found!\n";
+    }
+
+    void search(int key) {
+        if (head == NULL) {
+            cout << "List empty!\n";
+            return;
+        }
+        Node* temp = head;
+        int pos = 1;
+        do {
+            if (temp->data == key) {
+                cout << "Node found at position " << pos << endl;
+                return;
+            }
+            pos++;
+            temp = temp->next;
+        } while (temp != head);
+        cout << "Node not found!\n";
+    }
+
+    void display() {
+        if (head == NULL) {
+            cout << "List empty!\n";
+            return;
+        }
+        Node* temp = head;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << head->data << endl; // repeat head at end
+    }
+
+    int size() {
+        if (head == NULL)
+            return 0;
+        Node* temp = head;
+        int count = 0;
+        do {
+            count++;
+            temp = temp->next;
+        } while (temp != head);
+        return count;
+    }
+};
+
+int main() {
+    CircularLinkedList cll;
+    int choice, val, key;
+    do {
+        cout << "\n--- Circular Linked List Menu ---\n";
+        cout << "1. Insert at Beginning\n2. Insert at End\n3. Insert After Node\n";
+        cout << "4. Delete Node\n5. Search Node\n6. Display List\n7. Find Size\n0. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Enter value: "; cin >> val;
+            cll.insertAtBeginning(val);
+            break;
+        case 2:
+            cout << "Enter value: "; cin >> val;
+            cll.insertAtEnd(val);
+            break;
+        case 3:
+            cout << "Enter key and new value: ";
+            cin >> key >> val;
+            cll.insertAfter(key, val);
+            break;
+        case 4:
+            cout << "Enter value to delete: "; cin >> val;
+            cll.deleteNode(val);
+            break;
+        case 5:
+            cout << "Enter value to search: "; cin >> val;
+            cll.search(val);
+            break;
+        case 6:
+            cll.display();
+            break;
+        case 7:
+            cout << "Size = " << cll.size() << endl;
+            break;
+        }
+    } while (choice != 0);
+    return 0;
+}
