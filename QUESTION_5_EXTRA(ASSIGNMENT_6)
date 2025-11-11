@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Node structure with four pointers
+struct Node {
+    int data;
+    Node* next;
+    Node* prev;
+    Node* up;
+    Node* down;
+    
+    Node(int val) {
+        data = val;
+        next = prev = up = down = nullptr;
+    }
+};
+
+// Function to convert 2D matrix to doubly linked list
+Node* convertMatrixTo4DLL(vector<vector<int>>& matrix) {
+    if (matrix.empty() || matrix[0].empty()) return nullptr;
+    
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+    
+    // Create a 2D grid of nodes
+    vector<vector<Node*>> nodeGrid(rows, vector<Node*>(cols, nullptr));
+    
+    // Create all nodes
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            nodeGrid[i][j] = new Node(matrix[i][j]);
+        }
+    }
+    
+    // Connect next and previous pointers (horizontal connections)
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            // Connect to next node
+            if (j < cols - 1) {
+                nodeGrid[i][j]->next = nodeGrid[i][j + 1];
+            }
+            
+            // Connect to previous node
+            if (j > 0) {
+                nodeGrid[i][j]->prev = nodeGrid[i][j - 1];
+            }
+        }
+    }
+    
+    // Connect up and down pointers (vertical connections)
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            // Connect to down node
+            if (i < rows - 1) {
+                nodeGrid[i][j]->down = nodeGrid[i + 1][j];
+            }
+            
+            // Connect to up node
+            if (i > 0) {
+                nodeGrid[i][j]->up = nodeGrid[i - 1][j];
+            }
+        }
+    }
+    
+    return nodeGrid[0][0]; // Return head of the list
+}
+
+// Function to print the list in the required format
+void print4DLL(Node* head, int rows, int cols) {
+    if (!head) return;
+    
+    Node* rowStart = head;
+    
+    while (rowStart) {
+        Node* current = rowStart;
+        
+        while (current) {
+            cout << current->data << endl;
+            
+            // Print NULL pointers
+            if (!current->next) {
+                cout << "NULL" << endl;
+            }
+            
+            current = current->next;
+        }
+        
+        rowStart = rowStart->down;
+    }
+    
+    // Print additional NULLs for the bottom row
+    for (int i = 0; i < cols; i++) {
+        cout << "NULL" << endl;
+    }
+}
+
+int main() {
+    vector<vector<int>> matrix = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    
+    Node* head = convertMatrixTo4DLL(matrix);
+    print4DLL(head, 3, 3);
+    
+    return 0;
+}
