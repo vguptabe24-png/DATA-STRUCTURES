@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+    Node* prev;
+    Node(int val) {
+        data = val;
+        next = prev = NULL;
+    }
+};
+
+// Function to correct the random pointer
+Node* correctDLL(Node* head) {
+    if (!head) return NULL;
+
+    Node* curr = head;
+
+    // Traverse till you find a node whose next->prev is not equal to itself
+    while (curr && curr->next) {
+        // If the next node's prev pointer is wrong (not pointing back)
+        if (curr->next->prev != curr) {
+            Node* temp = curr->next; // Store the wrongly connected node
+            // Correct the links
+            curr->next = temp->next;
+            if (temp->next)
+                temp->next->prev = curr;
+            temp->next = NULL;
+            temp->prev = NULL;
+            break;
+        }
+        curr = curr->next;
+    }
+
+    return head;
+}
+
+// Function to print list in forward direction
+void printList(Node* head) {
+    Node* temp = head;
+    cout << "NULL <=> ";
+    while (temp) {
+        cout << temp->data << " <=> ";
+        temp = temp->next;
+    }
+    cout << "NULL" << endl;
+}
+
+int main() {
+    // Create doubly linked list: 1 <-> 2 <-> 3
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+
+    // Introduce a random pointer mistake: node 1 points to node 2 (extra link)
+    head->next = second;
+    second->next = head; // Wrong random pointer
+    second->prev = head;
+    head->prev = NULL;
+    third->next = NULL;
+
+    cout << "Before Correction (with random pointer):" << endl;
+    printList(head);
+
+    // Correct the list
+    head = correctDLL(head);
+
+    cout << "\nAfter Correction:" << endl;
+    printList(head);
+
+    return 0;
+}
