@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
+// Function to check if linked list is circular
+bool isCircular(Node* head) {
+    if (head == NULL)
+        return false; // Empty list is not circular
+
+    Node* temp = head->next;
+
+    // Traverse the list
+    while (temp != NULL && temp != head)
+        temp = temp->next;
+
+    // If we reached head again => circular
+    if (temp == head)
+        return true;
+    else
+        return false;
+}
+
+// Helper function to create a new node
+Node* newNode(int data) {
+    Node* node = new Node();
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+
+int main() {
+    // Create nodes
+    Node* head = newNode(2);
+    head->next = newNode(4);
+    head->next->next = newNode(6);
+    head->next->next->next = newNode(7);
+    head->next->next->next->next = newNode(5);
+
+    // Make it circular by connecting last node to head
+    head->next->next->next->next->next = head;
+
+    // Check if circular
+    if (isCircular(head))
+        cout << "True";
+    else
+        cout << "False";
+
+    return 0;
+}
